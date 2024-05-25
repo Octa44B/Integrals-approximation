@@ -21,7 +21,7 @@ def midintegral(a,b,fun,n):
     ls = 0
     dx=(b-a)/n
     i=a
-    while i<=b:
+    while i<b:
         ls+=dx*fun(i+(dx/2))
         i+=dx
     with lock:
@@ -37,7 +37,7 @@ def trapintegral(a:float,b:float,f,dx:float):
     ls=0
     i=a
     bmoddx=b%dx
-    while i <= b:
+    while i < b:
         ls+=dx*(f(i)+f(i+dx))/2
         i+=dx
     ls+=bmoddx*(f(b-bmoddx)+f(b))/2
@@ -45,6 +45,7 @@ def trapintegral(a:float,b:float,f,dx:float):
         s+=ls
 
 ### TO TEST WHICH METHODS IS FASTER AND MORE ACCURATE
+#test midintegral
 time1=time.time()
 threads=[threading.Thread(target=midintegral, args=(a+((i*(b-a))/nThreads),a+((i+1)*(b-a)/nThreads),fun,33333,)) for i in range(nThreads)]
 
@@ -56,11 +57,8 @@ for thread in threads:
 print(time.time()-time1)
 print(s)
 
-
+#test trapintegral 
 s=0
-
-
-
 time1=time.time()
 threads=[threading.Thread(target=trapintegral, args=(a+((i*(b-a))/nThreads),a+((i+1)*(b-a)/nThreads),fun,dx,)) for i in range(nThreads)]
 
